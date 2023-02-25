@@ -10,7 +10,6 @@ const isProduction = process.env.NODE_ENV == "production";
 
 console.log('isProduction:', isProduction);
 
-
 const stylesHandler = isProduction
   ? MiniCssExtractPlugin.loader
   : "style-loader";
@@ -18,12 +17,13 @@ const stylesHandler = isProduction
 const config = {
     entry: path.resolve(__dirname, '..', 'src', 'index.tsx'),
     output: {
-        filename: 'main-[hash].js',
+        filename: 'main-[chunkhash].js', // '[name].main-[chunkhash].js'
         path: path.resolve(__dirname, '..', 'build'),
     },
     devServer: {
         open: true,
         host: 'localhost',
+        port: 3000
     },
     plugins: [
         new HtmlWebpackPlugin({
@@ -60,8 +60,15 @@ const config = {
     },
     resolve: {
         extensions: ['.tsx', '.ts', '.jsx', '.js', '...'],
+        alias: {
+            '@public': path.resolve(__dirname, '..', 'public'),
+            '@': path.resolve(__dirname, '..', 'src'),
+        },
     },
     optimization: {
+        splitChunks: {
+            chunks: 'all'
+        },
         minimizer: [
             new EsbuildPlugin(
                 isProduction && {

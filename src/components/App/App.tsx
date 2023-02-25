@@ -1,5 +1,5 @@
 import { FC, useState } from 'react'
-import picture from '../../../public/Bridges_Houses.jpg';
+import picture from '@public/Bridges_Houses.jpg';
 import Header from '../Header/Header';
 
 

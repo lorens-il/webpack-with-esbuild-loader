@@ -17,7 +17,7 @@ const stylesHandler = isProduction
 const config = {
     entry: path.resolve(__dirname, '..', 'src', 'index.tsx'),
     output: {
-        filename: 'main-[chunkhash].js', // '[name].main-[chunkhash].js'
+        filename: 'main-[chunkhash:8].js', // '[name].main-[chunkhash].js'
         path: path.resolve(__dirname, '..', 'build'),
     },
     devServer: {
@@ -64,14 +64,19 @@ const config = {
             '@public': path.resolve(__dirname, '..', 'public'),
             '@': path.resolve(__dirname, '..', 'src'),
         },
-    },
-    optimization: {
+    }
+};
+
+module.exports = () => {
+  if (isProduction) {
+    config.mode = "production";
+    config.optimization =  {
         splitChunks: {
             chunks: 'all'
         },
         minimizer: [
             new EsbuildPlugin(
-                isProduction && {
+                {
                     target: 'es2016', // Syntax to compile to (see options below for possible values)
                     minify: true,
                     css: true,
@@ -79,13 +84,13 @@ const config = {
             ),
         ],
     },
-};
-
-module.exports = () => {
-  if (isProduction) {
-    config.mode = "production";
-
-    config.plugins.push(new MiniCssExtractPlugin({filename: 'main-[hash].css'}));
+    config.plugins.push(
+        new MiniCssExtractPlugin(
+            { 
+                filename: 'main-css-[chunkhash:8].css' 
+            }
+        )
+    );
   } else {
     config.mode = "development";
   }

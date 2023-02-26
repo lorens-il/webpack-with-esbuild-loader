@@ -17,7 +17,7 @@ const stylesHandler = isProduction
 const config = {
     entry: path.resolve(__dirname, '..', 'src', 'index.tsx'),
     output: {
-        filename: 'main-[chunkhash].js', // '[name].main-[chunkhash].js'
+        filename: 'main-[chunkhash:8].js', // '[name].main-[chunkhash].js'
         path: path.resolve(__dirname, '..', 'build'),
     },
     devServer: {
@@ -85,7 +85,13 @@ module.exports = () => {
   if (isProduction) {
     config.mode = "production";
 
-    config.plugins.push(new MiniCssExtractPlugin({filename: 'main-[hash].css'}));
+    config.plugins.push(
+        new MiniCssExtractPlugin(
+            { 
+                filename: 'main-css-[chunkhash:8].css' 
+            }
+        )
+    );
   } else {
     config.mode = "development";
   }

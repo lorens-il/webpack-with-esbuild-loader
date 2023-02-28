@@ -1,13 +1,10 @@
-import React from 'react'
-import bear from '@public/bear.jpg'
+import bear from '@public/bear.jpg';
 
-const Header = () => {
-  return (
-      <div>
-          Header
-          <img src={bear} alt="img" />
-      </div>
-  );
-}
+const Header = () => (
+  <div>
+    Header
+    <img src={bear} alt="img" />
+  </div>
+);
 
-export default Header
+export default Header;

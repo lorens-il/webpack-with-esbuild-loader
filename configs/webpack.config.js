@@ -50,7 +50,19 @@ const config = {
       },
       {
         test: /\.s[ac]ss$/i,
-        use: [stylesHandler, 'css-loader', 'sass-loader'],
+        use: [
+          stylesHandler,
+          {
+            loader: 'css-loader',
+            options: {
+              modules: {
+                auto: true, // необходимо чтобы обычные классы тоже работали.
+                localIdentName: '[local]__[hash:base64:5]',
+              },
+            },
+          },
+          'sass-loader',
+        ],
       },
       {
         test: /\.(eot|svg|ttf|woff|woff2|png|jpg|gif)$/i,
